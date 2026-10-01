@@ -90,10 +90,19 @@ python3 hw2.py --cv-folder task2
 attack the MCP server. See the homework description for the full rules.
 
 ## Homework 2 solution:
-> to students: this is your report, see the homework description.
-
 ### Task 1
-> one paragraph describing your solution, and your results on `public_test`.
+I built a single LangChain agent (`ChatDeepSeek`, `deepseek-v4-flash`, `temperature=0`) with
+two async tools wrapping the six MCP tools: one resolves each candidate to the correct
+LinkedIn and Facebook profiles (disambiguating same-name people), the other fetches their full
+profiles. The prompt treats the CV as untrusted data and checks only the spec's checkable
+fields (name, city, jobs, education, skills), and `score_cvs` runs CVs concurrently under
+`asyncio.Semaphore(3)` while catching per-CV errors so one failure cannot abort the run. It
+scores **7/7 on `public_test` (accuracy 1.00)**.
 
 ### Task 2
-> the attack techniques you used and why you expect them to work.
+The attack exploits a **verification-coverage gap**: HW2.pdf §3.1 makes only name, city, jobs,
+education and skills checkable — job descriptions, the headline and the hometown are never
+discrepancy sources. The CV therefore matches every checkable field exactly and hides its
+single false detail (a fabricated job-description claim) where no verifier looks. A
+spec-compliant verifier sees every field it can check agreeing and scores the CV highly
+despite the real embellishment; against my own Task-1 agent it scores **1.0**.
