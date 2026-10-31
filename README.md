@@ -103,6 +103,8 @@ scores **7/7 on `public_test` (accuracy 1.00)**.
 The attack exploits a **verification-coverage gap**: HW2.pdf §3.1 makes only name, city, jobs,
 education and skills checkable — job descriptions, the headline and the hometown are never
 discrepancy sources. The CV therefore matches every checkable field exactly and hides its
-single false detail (a fabricated job-description claim) where no verifier looks. A
-spec-compliant verifier sees every field it can check agreeing and scores the CV highly
-despite the real embellishment; against my own Task-1 agent it scores **1.0**.
+single false detail (a fabricated job-description claim) where no verifier looks. The
+embellishment is phrased as a duty rather than a quantified achievement, so a deterministic
+extractor that flags unsupported numbers also passes it. A spec-compliant verifier sees every
+field it can check agreeing and scores the CV highly despite the real embellishment; against
+my own Task-1 agent it scores **1.0**.
